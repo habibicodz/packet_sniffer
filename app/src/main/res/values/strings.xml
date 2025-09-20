@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PacketSniffer</string>
+    <string name="proxy_service_connected_status">You device is being monitored</string>
+    <string name="proxy_service_disconnected_status">Turn on packet sniffer</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+</resources>
