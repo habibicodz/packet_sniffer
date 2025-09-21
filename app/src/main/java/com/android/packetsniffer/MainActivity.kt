@@ -12,23 +12,15 @@ import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.getValue
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.android.packetsniffer.navigation.navhost.AppNavHost
 import com.android.packetsniffer.services.ProxyService
-import com.android.packetsniffer.ui.screens.MainScreen
-import com.android.packetsniffer.ui.screens.SettingsScreen
 import com.android.packetsniffer.ui.theme.PacketSnifferTheme
 import com.android.packetsniffer.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
@@ -72,42 +64,15 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
         setContent {
             val navController = rememberNavController()
-            val proxyServiceState by mViewModel.proxyServiceState.collectAsStateWithLifecycle()
-            val connectionInProgress by mViewModel.isConnecting.collectAsStateWithLifecycle()
+
 
             PacketSnifferTheme {
-                NavHost(
-                    navController,
-                    startDestination = "main_screen",
-                    enterTransition = {
-                        scaleIn(
-                            initialScale = 0.9f,
-                            animationSpec = tween(300)
-                        ) + fadeIn(animationSpec = tween(300))
-                    },
-                    exitTransition = {
-                        scaleOut(
-                            targetScale = 0.9f,
-                            animationSpec = tween(300)
-                        ) + fadeOut(animationSpec = tween(300))
-                    }) {
-                    composable(route = "main_screen") {
-                        MainScreen(
-                            proxyServiceState = proxyServiceState,
-                            connectionInProgress = connectionInProgress,
-                            onSettingsClicked = {
-                                navController.navigate("settings_screen")
-                            },
-                            onToggleClicked = {
-                                toggleProxyService()
-                            }
-                        )
-                    }
-
-                    composable(route = "settings_screen") {
-                        SettingsScreen()
-                    }
-                }
+                AppNavHost(
+                    mViewModel = mViewModel,
+                    navController = navController,
+                    onToggleClicked = {
+                        toggleProxyService()
+                    })
             }
         }
     }

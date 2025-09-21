@@ -1,9 +1,12 @@
 package com.android.packetsniffer.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.packetsniffer.state.ProxyServiceState
+import com.android.packetsniffer.util.getInstalledApplications
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +15,11 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     application: Application
 ) : AndroidViewModel(application) {
+    private val applicationContext: Context = application.applicationContext
+
+    private val _allInstalledApplications = MutableStateFlow<ArrayList<String>?>(null)
+    val allInstalledApplications = _allInstalledApplications.asStateFlow()
+
     private var connectingStarted: Long = System.currentTimeMillis()
     private val _isConnecting = MutableStateFlow(false)
     val isConnecting = _isConnecting.asStateFlow()
@@ -20,6 +28,16 @@ class MainViewModel(
         MutableStateFlow<ProxyServiceState>(ProxyServiceState.Disconnected)
 
     val proxyServiceState = _proxyServiceState.asStateFlow()
+
+    init {
+        initAllApplications()
+    }
+
+    private fun initAllApplications() {
+        viewModelScope.launch {
+            _allInstalledApplications.emit(ArrayList(getInstalledApplications(applicationContext)))
+        }
+    }
 
 
     suspend fun waitConnectingTimeout() {
