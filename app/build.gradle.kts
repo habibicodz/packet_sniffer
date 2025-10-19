@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.android.packetsniffer"
+    namespace = "com.profusec.firewall.packetwall"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.android.packetsniffer"
+        applicationId = "com.profusec.firewall.packetwall"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -22,7 +22,19 @@ android {
 
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isDebuggable = false
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
             isMinifyEnabled = false
+            isDebuggable = true
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,9 +55,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.lottie.compose)
+    annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -55,11 +70,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

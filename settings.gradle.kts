@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "packetsniffer"
+rootProject.name = "PacketWall"
 include(":app")

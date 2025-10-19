@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">PacketSniffer</string>
+    <string name="app_name">PacketWall</string>
     <string name="proxy_service_connected_status">You device is being monitored</string>
     <string name="proxy_service_disconnected_status">Turn on packet sniffer</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
+    <string name="connected_firewall_status">Firewall is ON</string>
+    <string name="disconnected_firewall_status">Firewall is OFF</string>
+    <string name="app_shared_preferences">packet_sniffer_shared_prefs</string>
+    <string name="is_dark_theme_pref">is_dark_theme_pref\n</string>
+    <string name="theme_mode_pref">theme_mode_pref</string>
+    <string name="database_name">sniffer_db_name</string>
+    <string name="app_lock_hash_pref">app_lock_hash_pref</string>
 </resources>
